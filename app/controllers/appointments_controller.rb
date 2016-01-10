@@ -6,7 +6,7 @@ class AppointmentsController < ApplicationController
   end
 
   def create
-    appointments = Appointment.new(appointment_params)
+    appointment = Appointment.new(appointment_params)
 
     if appointment.save
       render json: appointment, status: 201, location: appointment
