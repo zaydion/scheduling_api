@@ -10,6 +10,8 @@ class AppointmentsController < ApplicationController
 
     if appointment.save
       render json: appointment, status: 201, location: appointment
+    else
+      render json: appointment.errors, status: 422
     end
   end
 
