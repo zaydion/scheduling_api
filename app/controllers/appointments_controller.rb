@@ -5,6 +5,11 @@ class AppointmentsController < ApplicationController
     if start_time = params[:start_time]
       appointments = appointments.where(start_time: start_time)
     end
+
+    if end_time = params[:end_time]
+      appointments = appointments.where(end_time: end_time)
+    end
+
     render json: appointments, status: 200
   end
 

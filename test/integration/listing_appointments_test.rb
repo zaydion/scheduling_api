@@ -38,10 +38,25 @@ class ListingAppointmentsTest < ActionDispatch::IntegrationTest
     refute_includes names, "john"
   end
 
-  # test 'returns appointment by end_time filter' do
-  #   get 'appointments?end_time=#{@appointment.end_time}'
+  test 'returns appointment by end_time filter' do
+    appointment = Appointment.create!(first_name: "matt",
+                                      last_name: "wayne",
+                                      date: "09/19/16",
+                                      start_time: "11:00",
+                                      end_time: "11:05")
 
-  #   assert_equal 200, response.status
-  #   assert_equal Mime::JSON, response.content_type
-  # end
+    appointment = Appointment.create!(first_name: "john",
+                                      last_name: "kramer",
+                                      date: "09/19/16",
+                                      start_time: "12:00",
+                                      end_time: "12:05")
+
+    get '/appointments?end_time=12:05'
+    assert_equal 200, response.status
+
+    appointments = json(response.body)
+    names = appointments.collect { |appointment| appointment[:first_name] }
+    assert_includes names, "john"
+    refute_includes names, "matt"
+  end
 end
