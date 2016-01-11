@@ -15,9 +15,28 @@ class AppointmentsController < ApplicationController
     end
   end
 
+  def update
+    appointment = Appointment.find(params[:id])
+
+    if appointment.update(appointment_params)
+      render json: appointment, status: 200
+    else
+      render json: appointment.errors, status: 422
+    end
+  end
+
+  def show
+    appointment = Appointment.find(params[:id])
+    render json: appointment, status: 200
+  end
+
   private
   def appointment_params
-    params.require(:appointment).permit(:first_name, :last_name, :date, :start_time, :end_time)
+    params.require(:appointment).permit(:first_name,
+                                        :last_name,
+                                        :date,
+                                        :start_time,
+                                        :end_time)
   end
 end
 
