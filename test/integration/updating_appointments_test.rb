@@ -15,4 +15,12 @@ class UpdatingAppointmentsTest < ActionDispatch::IntegrationTest
       assert_equal 200, response.status
       assert_equal 'mark', @appointment.reload.first_name
   end
+
+  test "does not update appointment with invalid data" do
+    patch "/appointments/#{@appointment.id}",
+      { appointment: { first_name: nil } }.to_json,
+      { 'Accept' => Mime::JSON, 'Content-Type' => Mime::JSON.to_s }
+
+      assert_equal 422, response.status
+  end
 end

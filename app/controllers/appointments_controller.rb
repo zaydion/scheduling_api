@@ -30,6 +30,12 @@ class AppointmentsController < ApplicationController
     render json: appointment, status: 200
   end
 
+  def destroy
+    appointment = Appointment.find(params[:id])
+    appointment.destroy
+    head 204
+  end
+
   private
   def appointment_params
     params.require(:appointment).permit(:first_name,
