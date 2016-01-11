@@ -2,6 +2,10 @@ class AppointmentsController < ApplicationController
 
   def index
     appointments = Appointment.all
+    if date = params[:date]
+      appointments = appointments.where(date: date)
+    end
+
     if start_time = params[:start_time]
       appointments = appointments.where(start_time: start_time)
     end

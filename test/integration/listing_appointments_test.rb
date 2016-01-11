@@ -17,13 +17,13 @@ class ListingAppointmentsTest < ActionDispatch::IntegrationTest
   end
 
   test 'returns appointments filtered by start_time' do
-    appointment = Appointment.create!(first_name: "matt",
+    appointment_a = Appointment.create!(first_name: "matt",
                                       last_name: "wayne",
                                       date: "09/19/16",
                                       start_time: "11:00",
                                       end_time: "11:05")
 
-    appointment = Appointment.create!(first_name: "john",
+    appointment_b = Appointment.create!(first_name: "john",
                                       last_name: "kramer",
                                       date: "09/19/16",
                                       start_time: "12:00",
@@ -33,19 +33,19 @@ class ListingAppointmentsTest < ActionDispatch::IntegrationTest
     assert_equal 200, response.status
 
     appointments = json(response.body)
-    names = appointments.collect { |appointment| appointment[:first_name] }
-    assert_includes names, "matt"
-    refute_includes names, "john"
+    names = appointments.collect { |appointment| appointment[:last_name] }
+    assert_includes names, "wayne"
+    refute_includes names, "kramer"
   end
 
   test 'returns appointment by end_time filter' do
-    appointment = Appointment.create!(first_name: "matt",
+    appointment_a = Appointment.create!(first_name: "matt",
                                       last_name: "wayne",
                                       date: "09/19/16",
                                       start_time: "11:00",
                                       end_time: "11:05")
 
-    appointment = Appointment.create!(first_name: "john",
+    appointment_b = Appointment.create!(first_name: "john",
                                       last_name: "kramer",
                                       date: "09/19/16",
                                       start_time: "12:00",
@@ -55,8 +55,40 @@ class ListingAppointmentsTest < ActionDispatch::IntegrationTest
     assert_equal 200, response.status
 
     appointments = json(response.body)
-    names = appointments.collect { |appointment| appointment[:first_name] }
-    assert_includes names, "john"
-    refute_includes names, "matt"
+    names = appointments.collect { |appointment| appointment[:last_name] }
+    assert_includes names, "kramer"
+    refute_includes names, "wayne"
+  end
+
+  test 'returns appointments by date filter' do
+    appointment_a = Appointment.create!(first_name: "matt",
+                                      last_name: "wayne",
+                                      date: "10/19/16",
+                                      start_time: "12:00",
+                                      end_time: "12:05")
+
+    appointment_b = Appointment.create!(first_name: "john",
+                                      last_name: "kramer",
+                                      date: "09/19/16",
+                                      start_time: "12:00",
+                                      end_time: "12:05")
+
+    get '/appointments?date=10/19/16'
+    assert_equal 200, response.status
+
+    appointments = json(response.body)
+    names = appointments.collect { |appointment| appointment[:last_name] }
+    assert_includes names, "wayne"
+    refute_includes names, "kramer"
   end
 end
+
+
+
+
+
+
+
+
+
+
