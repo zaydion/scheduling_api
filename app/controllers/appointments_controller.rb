@@ -2,16 +2,13 @@ class AppointmentsController < ApplicationController
 
   def index
     appointments = Appointment.all
-    if date = params[:date]
-      appointments = appointments.where(date: date)
-    end
 
     if start_time = params[:start_time]
-      appointments = appointments.where(start_time: start_time)
+      appointments = appointments.where(start_time: start_time.to_datetime)
     end
 
     if end_time = params[:end_time]
-      appointments = appointments.where(end_time: end_time)
+      appointments = appointments.where(end_time: end_time.to_datetime)
     end
 
     render json: appointments, status: 200
@@ -52,9 +49,9 @@ class AppointmentsController < ApplicationController
   def appointment_params
     params.require(:appointment).permit(:first_name,
                                         :last_name,
-                                        :date,
                                         :start_time,
-                                        :end_time)
+                                        :end_time,
+                                        :comment)
   end
 end
 

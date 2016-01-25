@@ -18,18 +18,18 @@ class ListingAppointmentsTest < ActionDispatch::IntegrationTest
 
   test 'returns appointments filtered by start_time' do
     appointment_a = Appointment.create!(first_name: "matt",
-                                      last_name: "wayne",
-                                      date: "09/19/16",
-                                      start_time: "11:00",
-                                      end_time: "11:05")
+                                        last_name: "wayne",
+                                        start_time: "3016-12-13 05:30:00",
+                                        end_time: "3016-12-13 05:35:00",
+                                        comment: "excellent patient")
 
-    appointment_b = Appointment.create!(first_name: "john",
-                                      last_name: "kramer",
-                                      date: "09/19/16",
-                                      start_time: "12:00",
-                                      end_time: "12:05")
+    appointment_b = Appointment.create!(first_name: "carl",
+                                        last_name: "kramer",
+                                        start_time: "3016-11-15 04:00:00",
+                                        end_time: "3016-11-15 04:05:00",
+                                        comment: "excellent patient")
 
-    get "/appointments?start_time=11:00"
+    get "/appointments?start_time=3016-12-13%2005:30"
     assert_equal 200, response.status
 
     appointments = json(response.body)
@@ -40,46 +40,24 @@ class ListingAppointmentsTest < ActionDispatch::IntegrationTest
 
   test 'returns appointment by end_time filter' do
     appointment_a = Appointment.create!(first_name: "matt",
-                                      last_name: "wayne",
-                                      date: "09/19/16",
-                                      start_time: "11:00",
-                                      end_time: "11:05")
+                                        last_name: "wayne",
+                                        start_time: "3016-12-13 03:30:00",
+                                        end_time: "3016-12-13 03:35:00",
+                                        comment: "excellent patient")
 
-    appointment_b = Appointment.create!(first_name: "john",
-                                      last_name: "kramer",
-                                      date: "09/19/16",
-                                      start_time: "12:00",
-                                      end_time: "12:05")
+    appointment_b = Appointment.create!(first_name: "carl",
+                                        last_name: "kramer",
+                                        start_time: "3016-12-13 05:30:00",
+                                        end_time: "3016-12-13 05:35:00",
+                                        comment: "excellent patient")
 
-    get '/appointments?end_time=12:05'
+    get "/appointments?end_time=3016-12-13%2005:35:00"
     assert_equal 200, response.status
 
     appointments = json(response.body)
     names = appointments.collect { |appointment| appointment[:last_name] }
     assert_includes names, "kramer"
     refute_includes names, "wayne"
-  end
-
-  test 'returns appointments by date filter' do
-    appointment_a = Appointment.create!(first_name: "matt",
-                                      last_name: "wayne",
-                                      date: "10/19/16",
-                                      start_time: "12:00",
-                                      end_time: "12:05")
-
-    appointment_b = Appointment.create!(first_name: "john",
-                                      last_name: "kramer",
-                                      date: "09/19/16",
-                                      start_time: "12:00",
-                                      end_time: "12:05")
-
-    get '/appointments?date=10/19/16'
-    assert_equal 200, response.status
-
-    appointments = json(response.body)
-    names = appointments.collect { |appointment| appointment[:last_name] }
-    assert_includes names, "wayne"
-    refute_includes names, "kramer"
   end
 end
 

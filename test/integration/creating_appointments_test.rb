@@ -1,12 +1,17 @@
 require 'test_helper'
 
 class CreatingAppointmentsTest < ActionDispatch::IntegrationTest
+    setup { @appointment = Appointment.create!(first_name: "matt",
+                                             last_name: "wayne",
+                                             start_time: "3016-12-13 05:30:00",
+                                             end_time: "3016-12-13 05:35:00",
+                                             comment: "excellent patient") }
 
   test 'create appointments' do
     post '/appointments',
     { appointment:
-      { first_name: 'jose', last_name: 'cartagena', date: '2/19/16',
-       start_time: '14:00', end_time: '14:05' }
+      { first_name: 'jose', last_name: 'cartagena', start_time: "3016-12-13 05:30:00",
+        end_time: "3016-12-13 05:35:00", comment: "Nice attitude"}
       }.to_json,
     { 'Accept' => Mime::JSON, 'Content-Type' => Mime::JSON.to_s }
 
@@ -20,8 +25,7 @@ class CreatingAppointmentsTest < ActionDispatch::IntegrationTest
   test 'invalid appointments are not created' do
     post '/appointments',
     { appointment:
-      { first_name: nil, last_name: 'cartagena', date: nil,
-       start_time: '14:00', end_time: '14:05' }
+      { first_name: nil }
       }.to_json,
     { 'Accept' => Mime::JSON, 'Content-Type' => Mime::JSON.to_s }
 

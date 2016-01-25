@@ -3,13 +3,13 @@
 one:
   first_name: MyString
   last_name: MyString
-  date: MyString
   start_time: MyString
   end_time: MyString
+  comment: MyString
 
 two:
   first_name: MyString
   last_name: MyString
-  date: MyString
   start_time: MyString
   end_time: MyString
+  comment: MyString

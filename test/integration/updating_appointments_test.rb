@@ -3,9 +3,9 @@ require 'test_helper'
 class UpdatingAppointmentsTest < ActionDispatch::IntegrationTest
   setup { @appointment = Appointment.create!(first_name: "matt",
                                              last_name: "wayne",
-                                             date: "09/19/16",
-                                             start_time: "11:00",
-                                             end_time: "11:05") }
+                                             start_time: "3016-12-13 05:30:00",
+                                             end_time: "3016-12-13 05:35:00",
+                                             comment: "excellent patient") }
 
   test "updates apppointment" do
     patch "/appointments/#{@appointment.id}",
